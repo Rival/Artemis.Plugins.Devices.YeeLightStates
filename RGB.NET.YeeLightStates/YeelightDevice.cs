@@ -5,10 +5,10 @@ namespace RGB.NET.YeeLightStates
 {
     public class YeelightDevice : AbstractRGBDevice<YeelightDeviceInfo>
     {
-        private readonly YeeLightAPI.YeeLightDevice _yeeLightDevice;
+        private readonly YeelightAPI.Device _yeeLightDevice;
         private readonly YeelightDeviceInfo _deviceInfo;
         
-        internal YeelightDevice(YeeLightAPI.YeeLightDevice yeeLightDevice, YeelightDeviceInfo deviceInfo, IUpdateQueue updateQueue)
+        internal YeelightDevice(YeelightAPI.Device yeeLightDevice, YeelightDeviceInfo deviceInfo, IUpdateQueue updateQueue)
             : base(deviceInfo, updateQueue)
         {
             _yeeLightDevice = yeeLightDevice;

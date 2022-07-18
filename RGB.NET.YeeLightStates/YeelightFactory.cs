@@ -4,8 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using RGB.NET.Core;
-using RGB.NET.Devices.Bloody;
-using YeeLightAPI.YeeLightDeviceLocator;
 
 namespace RGB.NET.YeeLightStates
 {
@@ -27,8 +25,7 @@ namespace RGB.NET.YeeLightStates
         {
             //var lightIp = IPAddress.Parse("192.168.1.248");
             
-            var light = new YeeLightAPI.YeeLightDevice();
-            light.SetLightIPAddressAndPort(IpAddress, YeeLightAPI.YeeLightConstants.Constants.DefaultCommandPort);
+            var light = new YeelightAPI.Device(IpAddress.ToString(), 1982);
             LightConnectAndEnableMusicMode(light);
 
             _lights.Add(
@@ -44,16 +41,17 @@ namespace RGB.NET.YeeLightStates
             return _lights;
         }
 
-        private void LightConnectAndEnableMusicMode(YeeLightAPI.YeeLightDevice light)
+        private void LightConnectAndEnableMusicMode(YeelightAPI.Device light)
         {
             var localMusicModeListenPort = GetFreeTCPPort(); // This can be any free port
 
-            IPAddress localIP;
+            //IPAddress localIP;
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                var lightIP = light.GetLightIPAddressAndPort().ipAddress;
-                socket.Connect(lightIP, LightListenPort);
-                localIP = ((IPEndPoint)socket.LocalEndPoint).Address;
+                light.Connect();
+                //var lightIP = light .GetLightIPAddressAndPort().ipAddress;
+                //socket.Connect(lightIP, LightListenPort);
+                //localIP = ((IPEndPoint)socket.LocalEndPoint).Address;
             }
 
             light.Connect();
@@ -61,10 +59,10 @@ namespace RGB.NET.YeeLightStates
             do
             {
                 Thread.Sleep(500);
-            } while (!light.IsConnected() && --connectionTries > 0);
+            } while (!light.IsConnected && --connectionTries > 0);
             try
             {
-                light.SetMusicMode(localIP, (ushort)localMusicModeListenPort, true);
+                //light.SetMusSicMode(localIP, (ushort)localMusicModeListenPort, true);
             }
             catch
             {

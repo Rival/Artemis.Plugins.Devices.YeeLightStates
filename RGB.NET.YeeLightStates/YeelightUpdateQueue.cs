@@ -1,13 +1,13 @@
 ﻿using System;
 using RGB.NET.Core;
 
-namespace RGB.NET.Devices.Bloody
+namespace RGB.NET.YeeLightStates
 {
     public class YeelightUpdateQueue : UpdateQueue
     {
-        private readonly YeeLightAPI.YeeLightDevice _yeeLightDevice;
+        private readonly YeelightAPI.Device _yeeLightDevice;
 
-        public YeelightUpdateQueue(IDeviceUpdateTrigger updateTrigger, YeeLightAPI.YeeLightDevice yeeLightDevice) : base(updateTrigger)
+        public YeelightUpdateQueue(IDeviceUpdateTrigger updateTrigger, YeelightAPI.Device yeeLightDevice) : base(updateTrigger)
         {
             _yeeLightDevice = yeeLightDevice;
         }
@@ -17,7 +17,7 @@ namespace RGB.NET.Devices.Bloody
             foreach ((object key, Color color) item in dataSet)
             {
                 UpdateColor(item.color);
-                _yeeLightDevice.SetColor(item.color.GetR(), item.color.GetG(), item.color.GetB()); //TODO move
+                _yeeLightDevice.SetRGBColor(item.color.GetR(), item.color.GetG(), item.color.GetB()); //TODO move
             }
         }
         
@@ -71,13 +71,13 @@ namespace RGB.NET.Devices.Bloody
             {
                 //if (ShouldSendKeepAlive())
                 //{
-                        _yeeLightDevice.SetTemperature(6500);
+                        _yeeLightDevice.SetColorTemperature(6500);
                         _yeeLightDevice.SetBrightness(targetColor.GetR() * 100 / 255);
                 //}
             }
             if (whiteCounter == 1)
             {
-                 _yeeLightDevice.SetTemperature(6500);
+                 _yeeLightDevice.SetColorTemperature(6500);
                  _yeeLightDevice.SetBrightness(targetColor.GetR() * 100 / 255);
             }
             whiteCounter--;
@@ -90,13 +90,13 @@ namespace RGB.NET.Devices.Bloody
                 whiteCounter--;
                 ProceedColor(targetColor);
             }
-            _yeeLightDevice.SetTemperature(6500);
+            _yeeLightDevice.SetColorTemperature(6500);
             _yeeLightDevice.SetBrightness(targetColor.GetR() * 100 / 255);
         }
 
         private void ProceedColor(Color targetColor)
         {
-            _yeeLightDevice.SetColor(targetColor.GetR(), targetColor.GetG(), targetColor.GetB());
+            _yeeLightDevice.SetRGBColor(targetColor.GetR(), targetColor.GetG(), targetColor.GetB());
             _yeeLightDevice.SetBrightness(Math.Max(targetColor.GetR(), Math.Max(targetColor.GetG(), Math.Max(targetColor.GetB(), (short)1))) * 100 / 255);
         }
         
