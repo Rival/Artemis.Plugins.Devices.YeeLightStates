@@ -7,7 +7,7 @@ namespace RGB.NET.YeeLightStates
     {
         public RGBDeviceType DeviceType => RGBDeviceType.LedStripe;
         public string Manufacturer => "Yeelight";
-        public string DeviceName => "Some Yeelight Device"; //TODO name/numerate
+        public string DeviceName { get; private set; } 
         public string Model => "Some Yeelight Model"; //TODO name/numerate
         public object LayoutMetadata { get; set; }
 
@@ -17,5 +17,9 @@ namespace RGB.NET.YeeLightStates
         };
         
         internal Dictionary<object, LedId> KeyMapping => Mapping;
+        public YeelightDeviceInfo(string name)
+        {
+            DeviceName = name;
+        }
     }
 }

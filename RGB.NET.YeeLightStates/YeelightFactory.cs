@@ -34,7 +34,7 @@ namespace RGB.NET.YeeLightStates
             _lights.Add(
                 new YeelightDevice(
                     light, 
-                    new YeelightDeviceInfo(),
+                    new YeelightDeviceInfo("Yeelight:"+ IpAddress),
                     new YeelightUpdateQueue(
                         GetUpdateTrigger(),
                         light
@@ -83,5 +83,9 @@ namespace RGB.NET.YeeLightStates
             listener.Stop();
             return freePort;
         }
+
+
+        /// <inheritdoc />
+        protected override IDeviceUpdateTrigger CreateUpdateTrigger(int id, double updateRateHardLimit) => new HueDeviceUpdateTrigger();
     }
 }
